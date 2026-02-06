@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  web-server:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --url http://web-server:8080 --hostname ${DOMAIN:-www.rez-test.test}
+    depends_on:
+      - web-server
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+

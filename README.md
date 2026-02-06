@@ -1,9 +1,26 @@
-# 🚀 Simple HTTP Server
+# 🌍 Global HTTP Server
 
-A powerful, lightweight HTTP server built with Go that supports file serving, uploads, HTTPS, and Python CGI execution.
+Make your local Go HTTP server accessible from anywhere in the world!
 
 ![Go Version](https://img.shields.io/badge/Go-1.18+-00ADD8?style=for-the-badge&logo=go)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Global_Ready-green?style=for-the-badge)
+
+---
+
+## 🚀 Quick Start (3 Steps)
+
+```bash
+# Step 1: Make the script executable
+chmod +x start-global.sh
+
+# Step 2: Start your global server
+./start-global.sh
+
+# Step 3: Access your server globally!
+# Your URL will be displayed in the terminal
+```
+
+**That's it!** Your server is now accessible worldwide at `https://www.rez-test.test`
 
 ---
 
@@ -11,349 +28,265 @@ A powerful, lightweight HTTP server built with Go that supports file serving, up
 
 | Feature | Description |
 |---------|-------------|
+| 🌐 **Global Access** | Access from anywhere via Cloudflare Tunnel |
 | 📁 **File Serving** | Serve static files from any directory |
-| 📤 **File Upload** | Enable upload functionality for clients |
-| 🔒 **HTTPS Support** | Serve over secure HTTPS protocol |
-| 🐍 **Python CGI** | Execute Python scripts via CGI |
-| ⚡ **Lightweight** | Minimal dependencies, high performance |
-| 🎯 **Cross-Platform** | Works on Linux, macOS, and Windows |
+| 📤 **File Upload** | Enable upload functionality |
+| 🔒 **HTTPS** | Secure encrypted connections |
+| ⚡ **Fast Setup** | Ready in under 2 minutes |
+| 🖥️ **Cross-Platform** | Works on macOS, Linux, Windows |
 
 ---
 
 ## 📦 Installation
 
-### Option 1: Go Install (Recommended)
+### Prerequisites
+
+- **Go 1.18+** - [Download here](https://go.dev/dl/)
+- **Internet connection** - Required for the tunnel
+
+### Setup
 
 ```bash
-# Install the latest version
-go install -v github.com/projectdiscovery/simplehttpserver/cmd/simplehttpserver@latest
+# Clone or download this project
+cd Simple-Go-HTTP-Server
 
-# Add to PATH (add this to your ~/.bashrc or ~/.zshrc for persistence)
-export PATH=$PATH:$(go env GOPATH)/bin
-```
-
-### Option 2: Build from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/projectdiscovery/simplehttpserver.git
-cd simplehttpserver/cmd/simplehttpserver
-
-# Build the binary
-go build -o simplehttpserver simplehttpserver.go
-
-# Move to PATH
-sudo mv simplehttpserver /usr/local/bin/
-```
-
-### Option 3: Download Binary
-
-Visit the [releases page](https://github.com/projectdiscovery/simplehttpserver/releases) and download the pre-compiled binary for your platform.
-
----
-
-## 🚀 Quick Start
-
-### 1. View Help
-
-```bash
-simplehttpserver -h
-```
-
-Output:
-```
-$ simplehttpserver -h
-
-   __
-  / /  __ _____  ___ ___
- / _ \/ // / _ \/ // / -_)
-/_//_/\_, / .__/\_, /_/\_\
-     /___/_/  /___/
-
-Usage: ./simplehttpserver [options]
-
-Options:
-  -listen string      Address to listen on (default ":8000")
-  -upload             Enable file upload
-  -https              Enable HTTPS
-  -domain string      Domain for HTTPS certificate
-  -py                 Enable Python CGI support
-  -cors               Enable CORS headers
-  -config string      Configuration file path
-  -h                  Show help
-  -version            Show version
-
-Examples:
-  simplehttpserver -listen 127.0.0.1:8000
-  simplehttpserver -upload -listen :8080
-  simplehttpserver -https -domain localhost
-  simplehttpserver -py -listen :8000
-```
-
-### 2. Start Basic Server
-
-```bash
-# Listen on specific address and port
-simplehttpserver -listen 127.0.0.1:8000
-```
-
-Expected output:
-```
-[INF] Serving files on http://127.0.0.1:8000
-[INF] Directory: /home/user/current/directory
-```
-
-### 3. Access Your Server
-
-Open your browser and navigate to:
-```
-http://127.0.0.1:8000
+# Make the script executable
+chmod +x start-global.sh
 ```
 
 ---
 
-## 📋 Command Reference
+## 🎮 Usage
 
-### Basic Commands
+### Basic Usage
 
 ```bash
-# Listen on all interfaces
-simplehttpserver -listen 0.0.0.0:8080
-
-# Custom port only
-simplehttpserver -listen :8080
+# Start with default port (8080)
+./start-global.sh
 ```
 
-### With File Upload
+### Custom Port
 
 ```bash
-# Enable file upload functionality
-simplehttpserver -upload -listen 127.0.0.1:8000
-
-# Upload + custom port
-simplehttpserver -upload -listen :8080
+# Start on port 3000
+./start-global.sh 3000
 ```
 
-### With HTTPS
+### Using Make (Advanced)
 
 ```bash
-# Enable HTTPS with default settings
-simplehttpserver -https
+# Install dependencies and setup
+make setup
 
-# HTTPS with custom domain
-simplehttpserver -https -domain localhost
+# Start the global server
+make run
 
-# HTTPS on custom port
-simplehttpserver -https -listen :8443
+# Check server status
+make status
+
+# View logs
+make logs
+
+# Stop all servers
+make stop
 ```
 
-### With Python CGI
+### Using Docker
 
 ```bash
-# Enable Python script execution via CGI
-simplehttpserver -py -listen 8000
+# Start with Docker
+docker-compose up -d
 
-# Python + HTTPS
-simplehttpserver -py -https -domain localhost
-```
+# View logs
+docker-compose logs -f
 
-### Combined Options
-
-```bash
-# All features enabled
-simplehttpserver -upload -https -py -listen :8000
-
-# Upload + CORS
-simplehttpserver -upload -cors -listen :8080
+# Stop
+docker-compose down
 ```
 
 ---
 
-## 🎯 Usage Examples
+## 🔧 Configuration
 
-### Example 1: Development Server
+### Environment Variables
 
-```bash
-# Start a local development server
-simplehttpserver -listen 127.0.0.1:3000 -cors
-```
-
-**Use case:** Serving a frontend application during development
-
-```
-┌─────────────────────────────────────────────────┐
-│  Browser                                        │
-│  http://127.0.0.1:3000                         │
-│         │                                      │
-│         ▼                                      │
-│  ┌───────────────────────────────────────┐     │
-│  │  simplehttpserver                     │     │
-│  │  - Listens on :3000                   │     │
-│  │  - Serves static files                │     │
-│  │  - CORS enabled                       │     │
-│  └───────────────────────────────────────┘     │
-│         │                                      │
-│         ▼                                      │
-│  /home/user/project/                           │
-└─────────────────────────────────────────────────┘
-```
-
-### Example 2: File Sharing Server
+Create a `.env` file:
 
 ```bash
-# Share files with upload capability
-cd /path/to/share
-simplehttpserver -upload -listen 192.168.1.100:8080
+cp .env.example .env
 ```
 
-**Use case:** Sharing files on a local network
+Edit with your settings:
 
-### Example 3: Secure File Server
-
-```bash
-# HTTPS file server with upload
-simplehttpserver -upload -https -domain files.example.com -listen :443
+```env
+DOMAIN=www.rez-test.test
+PORT=8080
+UPLOAD_ENABLED=true
 ```
 
-**Use case:** Secure file sharing over the internet
+### Command Line Options
 
-### Example 4: Python CGI Server
-
-```bash
-# Python CGI execution
-simplehttpserver -py -listen 8000
-```
-
-**Use case:** Running Python web scripts and CGIs
-
-```
-Request Flow:
-┌──────────┐    GET /script.py    ┌──────────────┐
-│  Client  │ ───────────────────► │  simplehttpserver  │
-└──────────┘                      └───────┬──────┘
-                                          │
-                                          ▼
-                                  ┌──────────────┐
-                                  │  Python CGI  │
-                                  │  Interpreter │
-                                  └──────┬───────┘
-                                         │
-                                         ▼
-                                  ┌──────────────┐
-                                  │  Response    │
-                                  └──────────────┘
-```
+| Option | Description | Default |
+|--------|-------------|---------|
+| Port | Server port number | 8080 |
+| Domain | Your domain name | www.rez-test.test |
 
 ---
 
-## ⚙️ Configuration File
+## 🌐 Accessing Your Server
 
-Create a `config.yaml` file:
+### During Development
 
-```yaml
-# simplehttpserver configuration
-listen: ":8000"
-upload: true
-https: false
-domain: "localhost"
-py: false
-cors: true
-directory: "/path/to/serve"
+When you run `./start-global.sh`, you'll see:
+
+```
+🌐 Starting your Go HTTP server on port 8080...
+✅ Your server is ready!
+
+🔗 Starting Cloudflare Tunnel...
+Your server will be accessible at:
+https://www.rez-test.test
 ```
 
-Run with config:
-```bash
-simplehttpserver -config config.yaml
-```
+### For Permanent Hosting
+
+For `www.rez-test.test` to work globally:
+
+1. **Domain Registrar Setup:**
+   - Go to where you bought `rez-test.test`
+   - Change nameservers to Cloudflare:
+     ```
+     ns1.cloudflare.com
+     ns2.cloudflare.com
+     ```
+
+2. **Cloudflare Dashboard:**
+   - Add your domain to Cloudflare
+   - Go to DNS → Add record:
+     ```
+     Type: A
+     Name: www
+     Content: (auto-assigned by Cloudflare)
+     Proxy: ☁️ Proxied
+     ```
 
 ---
 
-## 🔧 Troubleshooting
-
-### Command Not Found
-
-If `simplehttpserver` is not found after installation:
-
-```bash
-# Check if it's in GOPATH
-ls $(go env GOPATH)/bin/simplehttpserver
-
-# Add to PATH permanently
-echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
-source ~/.bashrc
-```
-
-### Port Already in Use
-
-```bash
-# Find process using the port
-lsof -i :8000
-
-# Kill the process
-kill <PID>
-
-# Or use a different port
-simplehttpserver -listen :8080
-```
-
-### Permission Denied
-
-```bash
-# For ports below 1024 (Linux/macOS)
-sudo simplehttpserver -listen :80
-
-# Or use a port above 1024
-simplehttpserver -listen :8080
-```
-
----
-
-## 🏗️ Project Structure
+## 📁 Project Structure
 
 ```
-simplehttpserver/
+Simple-Go-HTTP-Server/
 ├── cmd/
 │   └── simplehttpserver/
-│       └── simplehttpserver.go    # Main entry point
-├── internal/
-│   └── runner/                     # Core server logic
-├── go.mod                          # Go module definition
-├── main.go                         # Root main.go
-└── README.md                       # This file
+│       └── index.html          # Your website files
+├── start-global.sh             # 🚀 Main script - RUN THIS!
+├── Makefile                    # Advanced management
+├── Dockerfile                  # Docker setup
+├── docker-compose.yml         # Container orchestration
+├── main.go                    # Server source code
+├── go.mod                     # Go module
+├── SETUP.md                   # Detailed setup guide
+└── README.md                  # This file
 ```
 
 ---
 
-## 📝 License
+## 🛠️ Server Endpoints
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Main page |
+| `/files/` | GET | File browser |
+| `/upload` | POST | Upload files |
+
+---
+
+## 📊 Troubleshooting
+
+### ❌ "Port already in use"
+
+```bash
+# Find the process
+lsof -i :8080
+
+# Kill it
+kill <PID>
+
+# Or use different port
+./start-global.sh 8081
+```
+
+### ❌ "Go is not installed"
+
+Download Go: https://go.dev/dl/
+
+### ❌ Can't access from other devices
+
+Check firewall:
+```bash
+sudo ufw allow 8080
+```
+
+### ❌ Tunnel not connecting
+
+```bash
+# Check logs
+make logs
+
+# Restart
+make stop
+./start-global.sh
+```
+
+---
+
+## 🔒 Security
+
+### For Development ✅
+- ✅ Fine for testing on mobile hotspot
+- ✅ Uses Cloudflare's secure tunnel
+- ⚠️ Self-signed certificates for local HTTPS
+
+### For Production 🚀
+1. Set up proper SSL/TLS certificates
+2. Configure Cloudflare full SSL mode
+3. Add authentication
+4. Enable rate limiting
+5. Use environment variables for secrets
+
+---
+
+## 📈 Roadmap
+
+- [ ] Add custom domain support
+- [ ] Add authentication
+- [ ] Add rate limiting
+- [ ] Add SSL certificate management
+- [ ] Add logging dashboard
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create feature branch: `git checkout -b feature/amazing`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing`
+5. Open Pull Request
 
 ---
 
-## 📧 Contact
+## 📝 License
 
-- **Project**: [projectdiscovery/simplehttpserver](https://github.com/projectdiscovery/simplehttpserver)
-- **Issues**: [GitHub Issues](https://github.com/projectdiscovery/simplehttpserver/issues)
+MIT License - feel free to use in your projects!
 
 ---
 
 <div align="center">
 
-**Happy Serving! 🌐**
+**🎉 Happy Hosting!** 🌍
 
-Made with ❤️ by the ProjectDiscovery Team
+Your server is now ready for the world!
 
 </div>
 
