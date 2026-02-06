@@ -91,7 +91,9 @@ start_server() {
     echo -e "${GREEN}🌐 Starting your Go HTTP server on port $PORT...${NC}"
     echo ""
     
-    cd /workspaces/Simple-Go-HTTP-Server
+    # Get the directory where the script is located
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    cd "$SCRIPT_DIR"
     
     # Start the server in background
     go run main.go -port "$PORT" &
