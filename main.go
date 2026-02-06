@@ -22,6 +22,7 @@ var (
 	port      = flag.Int("port", 8080, "Port to listen on")
 	https     = flag.Bool("https", false, "Enable HTTPS server")
 	upload    = flag.Bool("upload", false, "Enable file upload")
+	dir       = flag.String("dir", "cmd/simplehttpserver", "Directory to serve files from")
 	uploadDir = "./uploads"
 )
 
@@ -91,12 +92,15 @@ func serveStaticFile(w http.ResponseWriter, r *http.Request) {
 		path = "index.html"
 	}
 
+	// Prepend the serve directory
+	fullPath := *dir + "/" + path
+
 	// Check if file exists
-	info, err := os.Stat(path)
+	info, err := os.Stat(fullPath)
 	if err != nil {
 		// If index.html doesn't exist, show directory listing
 		if path == "index.html" {
-			serveDirectory(w, r, ".")
+			serveDirectory(w, r, *dir)
 			return
 		}
 		http.Error(w, "File not found", http.StatusNotFound)
@@ -105,17 +109,17 @@ func serveStaticFile(w http.ResponseWriter, r *http.Request) {
 
 	// If it's a directory, serve index.html or list contents
 	if info.IsDir() {
-		indexPath := path + "/index.html"
+		indexPath := fullPath + "/index.html"
 		if _, err := os.Stat(indexPath); err == nil {
 			path = indexPath
 		} else {
-			serveDirectory(w, r, path)
+			serveDirectory(w, r, fullPath)
 			return
 		}
 	}
 
 	// Serve the file
-	http.ServeFile(w, r, path)
+	http.ServeFile(w, r, fullPath)
 }
 
 func serveDirectory(w http.ResponseWriter, r *http.Request, dir string) {
